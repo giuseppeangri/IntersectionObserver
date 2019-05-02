@@ -49,6 +49,12 @@ function IntersectionObserverEntry(entry) {
     // If area is zero and is intersecting, sets to 1, otherwise to 0
     this.intersectionRatio = this.isIntersecting ? 1 : 0;
   }
+
+  this.isIntersecting = !!entry.intersectionRect && entry.thresholds.some(
+    (threshold) => {
+      return this.intersectionRatio >= threshold;
+    }
+  );
 }
 
 
@@ -308,7 +314,8 @@ IntersectionObserver.prototype._checkForIntersections = function() {
       target: target,
       boundingClientRect: targetRect,
       rootBounds: rootRect,
-      intersectionRect: intersectionRect
+      intersectionRect: intersectionRect,
+      thresholds: this.thresholds
     });
 
     if (!oldEntry) {
