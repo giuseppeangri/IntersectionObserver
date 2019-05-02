@@ -79,6 +79,10 @@ function IntersectionObserver(callback, opt_options) {
     throw new Error('root must be an Element');
   }
 
+  if (options.rootMustContainsTarget && typeof options.rootMustContainsTarget !== 'boolean') {
+    throw new Error('rootMustContainsTarget must be a Boolean');
+  }
+
   // Binds and throttles `this._checkForIntersections`.
   this._checkForIntersections = throttle(
       this._checkForIntersections.bind(this), this.THROTTLE_TIMEOUT);
@@ -88,6 +92,7 @@ function IntersectionObserver(callback, opt_options) {
   this._observationTargets = [];
   this._queuedEntries = [];
   this._rootMarginValues = this._parseRootMargin(options.rootMargin);
+  this._rootMustContainsTarget = options.rootMustContainsTarget || false;
 
   // Public properties.
   this.thresholds = this._initThresholds(options.threshold);
@@ -304,7 +309,7 @@ IntersectionObserver.prototype._checkForIntersections = function() {
   this._observationTargets.forEach(function(item) {
     var target = item.element;
     var targetRect = getBoundingClientRect(target);
-    var rootContainsTarget = this._rootContainsTarget(target);
+    var rootContainsTarget = this._rootMustContainsTarget ? this._rootContainsTarget(target) : true;
     var oldEntry = item.entry;
     var intersectionRect = rootIsInDom && rootContainsTarget &&
         this._computeTargetAndRootIntersection(target, rootRect);
