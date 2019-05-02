@@ -1,5 +1,14 @@
 # `IntersectionObserver` polyfill
 
+This is a fork of IntersectionObserver polyfill version 0.6.0.
+
+The following changes has been made:
+- Has been removed the initial check for native support (to force the use of this version)
+- Has been added the thresholds check in IntersectionObserverEntry (in this way the boolean isIntersecting is set to true only if the intersection ratio is greater than one of thresholds values)
+- Has been added rootMustContainsTarget option param in IntersectionObserver (this new option param permits to choose if execute the rootContainsTarget check, that in the orignal version is always executed)
+
+## Readme
+
 This library polyfills the native [`IntersectionObserver`](http://w3c.github.io/IntersectionObserver/) API in unsupporting browsers. See the [API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) for usage information.
 
 - [Installation](#installation)
